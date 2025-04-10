@@ -1,4 +1,5 @@
 import {useState, useEffect, useCallback} from 'react'
+import ProductCard from './components/ProductCard';
 
 /* 
 La funzione debounce limita la frequenza con cui una funzione può essere chiamata
@@ -24,11 +25,14 @@ function debounce(callback, delay) {
   };
 }
 
+
 function App() {
 
 
   const [query, setQuery] = useState('')
   const [suggestions, setSuggestions] = useState([])
+  const [selectedProduct, setSelectedProduct] = useState(null)
+  const [searching, setSearching] = useState(false)
 
 
   const handleInputChange = (e) => {
@@ -37,6 +41,7 @@ function App() {
   }
 
   const handleSearch = useCallback( debounce((newQuery) => {
+    setSearching(true)
     const fetchSuggestions = async () => {
 
       if (newQuery.trim() === "") {
@@ -53,6 +58,22 @@ function App() {
     }
     fetchSuggestions();
   }, 500), [])
+
+
+  const handleSelect = (id) => {
+    setSearching(false)
+    setSuggestions([]);
+    const fetchProduct = async () => {
+      const response = await fetch(`https://boolean-spec-frontend.vercel.app/freetestapi/products/${id}`)
+      const data = await response.json()
+      setSelectedProduct(data)
+      console.log(data)
+      setQuery(data.name)
+    }
+    fetchProduct();
+
+  }
+
 
 
   
@@ -84,9 +105,12 @@ function App() {
       {suggestions.length > 0 && (
         <ul className='suggestions'>
           {suggestions.map((suggestion) => (
-            <li className= "single-suggestion" key={suggestion.id}>{suggestion.name}</li>
+            <li className= "single-suggestion" key={suggestion.id} onClick={() => handleSelect(suggestion.id)}>{suggestion.name}</li>
           ))}
         </ul>
+      )}
+      {selectedProduct && searching === false && (
+          <ProductCard product={selectedProduct} />
       )}
     </div>
     </>
