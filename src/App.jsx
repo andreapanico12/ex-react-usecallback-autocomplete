@@ -8,7 +8,16 @@ function App() {
   const [query, setQuery] = useState('')
   const [suggestions, setSuggestions] = useState([])
 
-
+  function debounce(callback, delay) {
+    let timer;
+  
+    return (value) => {
+      clearTimeout(timer); // cancella il timeout precedente
+      timer = setTimeout(() => {
+        callback(value); // esegue la funzione solo dopo il delay
+      }, delay);
+    };
+  }
   
 
   useEffect(() =>{
