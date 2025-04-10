@@ -1,0 +1,40 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+.container {
+  position: relative;
+  width: 300px;
+  margin-top: 2.5rem;
+  margin-left: 1rem;
+
+  .searchbar{
+    width: 100%;
+    padding: 8px;
+  }
+
+  .suggestions{
+    position: absolute;
+    width: 100%;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    margin-top: 10px;
+    margin-left: 1rem;
+    padding: 0;
+    z-index: 10;
+    max-height: 200px;
+    overflow-y: auto;
+    list-style: none;
+
+
+}
+
+  }
+.single-suggestion{
+    padding: 8px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+  }
