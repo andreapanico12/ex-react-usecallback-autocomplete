@@ -4,8 +4,12 @@ import {useState, useEffect} from 'react'
 
 function App() {
 
+
   const [query, setQuery] = useState('')
   const [suggestions, setSuggestions] = useState([])
+
+
+  
 
   useEffect(() =>{
     const fetchSuggestions = async () => {
