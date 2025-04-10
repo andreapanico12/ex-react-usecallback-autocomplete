@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react'
+import {useState, useEffect, useCallback} from 'react'
 
 
 
@@ -20,30 +20,49 @@ function App() {
   }
   
 
-  useEffect(() =>{
+  const handleSearch = useCallback( debounce((newQuery) => {
     const fetchSuggestions = async () => {
 
-      if (query.trim() === "") {
+      if (newQuery.trim() === "") {
         setSuggestions([]);
         return;
       }
-      const response = await fetch(`https://boolean-spec-frontend.vercel.app/freetestapi/products?search=${query}`)
+      const response = await fetch(`https://boolean-spec-frontend.vercel.app/freetestapi/products?search=${newQuery}`)
       const data = await response.json()
       setSuggestions(data)
       console.log(suggestions)
-      console.log(suggestions[0].name)
 
     }
     fetchSuggestions();
+  }))
 
-  }, [query])
+
+  
+
+  // useEffect(() =>{
+  //   const fetchSuggestions = async () => {
+
+  //     if (query.trim() === "") {
+  //       setSuggestions([]);
+  //       return;
+  //     }
+  //     const response = await fetch(`https://boolean-spec-frontend.vercel.app/freetestapi/products?search=${query}`)
+  //     const data = await response.json()
+  //     setSuggestions(data)
+  //     console.log(suggestions)
+  //     console.log(suggestions[0].name)
+
+  //   }
+  //   fetchSuggestions();
+
+  // }, [query])
 
   
   return (
     <>
     <h1 className='title'>AUTOCOMPLETE</h1>
     <div className='container'>
-      <input className= "searchbar"type="text" value={query} onChange={(e) => setQuery(e.target.value)} />
+      <input className= "searchbar"type="text" value={query} onChange={(e) => handleSearch(e.target.value)} />
       {suggestions.length > 0 && (
         <ul className='suggestions'>
           {suggestions.map((suggestion) => (
